@@ -2,5 +2,5 @@
 
 ```c++
 print("This is assignment 1");
-#This is my comment
+//This is my comment
 ```
