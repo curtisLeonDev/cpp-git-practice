@@ -1,8 +1,6 @@
-#This is Heading 1
-##This is heading 2
+# Data Structures
 
-1. The way to create 100 elements, lets say Integers, we can do a ```C++ for``` loop
-
+## Create 100 elements in C++:
 ```C++
 numbers[100];
 
@@ -10,7 +8,9 @@ for(int i = 0; i < 100; i++){
 int[i] = i;
 }
 ```
-2. The size of each element, we can check the size by using the ```C++ sizeof()``` function
+Use ```for``` loop in a C++ program to make 
+## Get the sizof of the int element in the array. 
 ```C++
-cout << sizeof(numbers);
+std::cout << sizeof(numbers) << " bytes" << std::endl;
 ```
+3. 
