@@ -1,6 +1,6 @@
 # Data Structures
 
-view my youtube video here ```https://youtu.be/OidoLjf1kLM```
+view my youtube video here [Data Structures](https://youtu.be/OidoLjf1kLM)
 
 ## Create 100 elements in C++:
 ```C++
