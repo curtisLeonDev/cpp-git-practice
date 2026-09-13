@@ -16,10 +16,17 @@
 <h1 id="hello"></h1>  
   <a href="/cisc187">CISC-187</a>
   <a href="https://github.com/curtisLeonDev/cpp-git-practice/blob/4907ac6dd808917efb7e121c03fc14ea77d792ed/assignment-1.md">Assignment-1.md</a>
+<div id="checkout"></div>
 </body>
       <script src="https://js.stripe.com/dahlia/stripe.js"></script>
   <script>
 var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
-    
+var elements = stripe.elements({
+  mode: 'payment',
+  currency: 'usd',
+  amount: 1099,
+  captureMethod: 'automatic_async'
+}); 
+    stripe.mount('#checkout');
   </script>
 </html>
