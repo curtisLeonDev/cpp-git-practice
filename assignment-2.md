@@ -203,4 +203,30 @@ return 0;
 
 
 ```
+### Comparison
 
+1. Linear:
+   Best -> O(1)
+   Average -> O(N)
+   Worst -> O(N)
+
+   Binary:
+   Best-> O(1)
+   Average-> O(Log_10(N)
+   worst -> O(Log_10(N)
+
+   Random:
+   Best-> O(1)
+   Average->O(N)
+   Worst->O(N)
+
+2. The data must be sorted for binary, but the items don't neccessarily need to be sorted for linear or even random.
+
+3. For the random, I needed to create an additional vector to store all previously used random numbers that can be compared with the newly generated random number.
+
+4. Practical efficiency for 100,000 elements in Binary searching.
+5. The advantages for binary is its quick and easy to implement as long as the values are low. For Binary, it is the best, it compares to the solution alot quicker and with less steps, but the disadvantage is it HAS to be in order to work.
+6. Random, doesn't really have many advantages for the most part, but could be used for random number generators, like picking from a pool for a contest.
+
+It doesn't make sense to use random number search in place of the linear search. Even if the items are not in order, each element will be checked, it would take just as many and probably more searches for the random number search, and you don't need to keep track of the used numbers because the index loop is already progressing and wont reuse the same number. 
+   
