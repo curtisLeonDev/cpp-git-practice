@@ -101,3 +101,11 @@ if(found == 0){
 
 }
 ```
+The worst case time complexity for linear search is O(100000). The reason is after each comparison, you have only removed 1 element from the search space. 
+
+The worst case time complexity for the binary search is O(17). The program compares greater than and less then and basically divides in half the remaining space until it finds the target element. 
+
+Binary Data needs to be sorted so that we can accurately find the target result, because it is in order and needs to be compared greater or less than to the target item, to narrow the space block left. 
+
+
+
