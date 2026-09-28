@@ -93,20 +93,20 @@ struct Record {
 };
 
   int tableSize = 11; 
-  string tombstone = "ts";
+  
    vector<Record> record(tableSize);
     
    for(int i = 0; i < tableSize; i++){
 
     record[i].key = i;
-    record[i].value = tombstone;
+    record[i].value = "EMPTY";
 
    }
 for(int i = 0; i < tableSize; i++){
     cout << record[i].key << '\t' << record[i].value << endl;
 }
 ```
-This will automatically assign the tombstone = "ts" so all elements are marked as empty to each slots value. After generating the hash table, we will print it: 
+This will automatically assign the EMPTY so all elements are marked as empty to each slots value. After generating the hash table, we will print it: 
 
 key    value
 ------------
