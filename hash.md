@@ -4,13 +4,20 @@
 For this hashing function, we will start by add all the numbers together. 
 
 ```c++
-int makeHash(int key) {
+int hashFunction(int key, int tableSize) {
+int count = 0;
+int keyCount = key;
+while(keyCount != 0){
+keyCount /= 10;
+++count;
+}
+
 int addHash = 0;
-for(int i = 0; i < 6; i++){
+for(int i = 0; i < count; i++){
 addHash += key % 10;
 key /= 10;
 }
-return addHash %= 10;
+return addHash %= tableSize;
 }
 ```
 When running this program, it creates a hash by using += to addHash buy taking the modulus of the number by 10, and then you need to remove that previous digit by dividing the key each time until you get to 0. 
