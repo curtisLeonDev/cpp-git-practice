@@ -1,6 +1,6 @@
 # Implementing Hash Tables
 
-## Implementing the Hash Function. 
+## Part 1 — Understanding Hash Functions & Part 2. 
 For this hashing function, we will start by add all the numbers together. 
 
 ```c++
