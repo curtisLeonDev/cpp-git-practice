@@ -84,3 +84,28 @@ key /= 10;
 return addHash %= tableSize;
 }
 ```
+## Part 3 — Linear Probing
+for the hash table implement a struct of type Record, and then generate a vector array with 11 slots. 
+```c++
+struct Record {
+    int key;
+    string value;
+};
+
+  int tableSize = 11; 
+  string tombstone = "ts";
+   vector<Record> record(tableSize);
+    
+   for(int i = 0; i > tableSize; i++){
+
+    record[i].key = i;
+    record[i].value = tombstone;
+
+   }
+for(int i = 0; i < tableSize; i++){
+    cout << record[i].key << '\t' << record[i].value << endl;
+}
+```
+This will automatically assign the tombstone = \0 to each slots value. After generating the hash table, we will print it: 
+
+
