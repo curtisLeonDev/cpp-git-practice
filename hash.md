@@ -132,3 +132,43 @@ key    value
 
 10      EMPTY
 
+## INSERT FUNCTION
+
+We create a funtion to insert the element into the vector array. The first step is to check if the generated hash is available, if its marked empty then, because its nested in a if statement, the function returns the value 1 for success. 
+
+if that location is full, then we envoke the else statement that executes a while loop, incrementing the provided key until we find an "EMPTY" location. 
+if the hash location is farther down the array, then we also include an if statement to reset the key to 0 to check for empties. A count is also implemented, so if the entire table size is checked, and no elmements are available, we break the while loop and return 0 for success. 
+
+```c++
+int insertElement(vector<Record> &record, int keys, string values, int tableSize){
+int success = 0;
+    if(record[keys].value == "EMPTY"){
+    record[keys].key = keys;
+        record[keys].value = values;
+        success = 1;
+    } else {
+    while(record[keys].value != "EMPTY"){
+        if(record[keys].value == "EMPTY"){
+            record[keys].key = keys;
+            record[keys].value = values;
+            success = 1;
+            break;
+        
+        }
+        if(keys == (tableSize - 1)){
+            keys = 0;
+        } else {
+keys++;
+        }
+        
+    }
+    
+    }
+
+   
+return success;
+
+
+}
+```
+
