@@ -110,16 +110,15 @@ This will automatically assign the EMPTY so all elements are marked as empty to 
 
 key    value
 ------------
-0       ts
-1       ts
-2       ts
-3       ts
-4       ts
-5       ts
-6       ts
-7       ts
-8       ts
-9       ts
-10      ts
-
+0       EMPTY\n
+1       EMPTY
+2       EMPTY
+3       EMPTY
+4       EMPTY
+5       EMPTY
+6       EMPTY
+7       EMPTY
+8       EMPTY
+9       EMPTY
+10      EMPTY
 
