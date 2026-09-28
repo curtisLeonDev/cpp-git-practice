@@ -36,3 +36,51 @@ Key	Digit       Sum	Table Index
 There were two collisions with the original (555223) that occupied that space in memory. 
 
 Increasing the size of the table does help by using the 0.7 rule; but it can never guarantee that no collisions occur. When adding the hash, different digits in a number, from two different numbers of keys, can add to the same sum index and then and return the same modulus. 
+
+The complete code for this part is: 
+```c++
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+
+int hashFunction(int key, int tableSize);
+
+
+
+
+int main(){
+    
+vector<int> hashTable(10);
+    
+int tableSize = 10;
+    
+    
+    
+    cout << hashFunction(555223, tableSize) << endl;
+    cout << hashFunction(555980, tableSize) << endl;
+    cout << hashFunction(555000, tableSize) << endl;
+    cout << hashFunction(555890, tableSize) << endl;
+    
+    
+    return 0;
+}
+//hashing function
+int hashFunction(int key, int tableSize) {
+int count = 0;
+int keyCount = key;
+while(keyCount != 0){
+keyCount /= 10;
+++count;
+}
+
+int addHash = 0;
+for(int i = 0; i < count; i++){
+addHash += key % 10;
+key /= 10;
+}
+return addHash %= tableSize;
+}
+```
