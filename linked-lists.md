@@ -1,2 +1,23 @@
 # Liked Lists
 
+## Part 1 - Understanding Nodes and Pointers
+
+```c++
+struct Node {
+int data;
+Node* next;
+};
+```
+
+
+Head (the reference pointer to the first linked item, stores the memory address)  
+|  
+|  
+---> Node first (data, address of second element)  
+     |  
+      ---> Node Second (data, address of third element)  
+           |  
+           ---> Node third (data, nullptr; the end)  
+1. Head does not contail the value 8.
+2. Head stores only the memory address for the first linked element in the list.
+3. first->next contains the data in int format and the memory address in next (which is of type pointer). 
