@@ -21,4 +21,35 @@ Node* next;
 4. third->net contains the value ```c++ nullptr```
 5. If you lose the value of head, there is no way to know what the beginning address of the list is.
 
-## Part 2 - 
+## Part 2 - Trace a linked list
+
+```c++
+#include <iostream>
+using namespace std;
+struct Node {
+    int data;
+    Node* next;
+};
+
+int main(){
+
+Node *first = new Node{10, nullptr};
+Node *second = new Node{20, nullptr};
+Node *third = new Node{30, nullptr};
+Node *four = new Node{40, nullptr};
+
+Node* temp = first;
+
+first->next = second;
+second->next = third;
+third->next = four;
+four->next = nullptr;
+
+while(temp != nullptr){
+    cout << temp->data << " ";
+    temp = temp->next;
+}
+
+
+}
+```
