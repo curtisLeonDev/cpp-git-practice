@@ -14,7 +14,7 @@ Head (the reference pointer to the first linked item, stores the memory address)
 |  
 |  
 ---> Node first (data, address of second element)  
-     |  
+&nbsp;     |  
       ---> Node Second (data, address of third element)  
            |  
            ---> Node third (data, nullptr; the end)  
