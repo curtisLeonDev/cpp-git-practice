@@ -46,7 +46,7 @@ third->next = four;
 four->next = nullptr;
 
 while(temp != nullptr){
-    cout << temp->data << " ";
+    cout << temp->data << '\n';
     temp = temp->next;
 }
 
