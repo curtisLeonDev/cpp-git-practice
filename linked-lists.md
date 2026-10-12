@@ -8,16 +8,11 @@ int data;
 Node* next;
 };
 ```
-
-
-Head (the reference pointer to the first linked item, stores the memory address)  
-|  
-|  
----> Node first (data, address of second element)  
-&nbsp;&nbsp;&nbsp;&nbsp;|  
-&nbsp;&nbsp;&nbsp;&nbsp;|---> Node Second (data, address of third element)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---> Node third (data, nullptr; the end)  
+ head(the reference pointer to the first linked item, stores the memory address)  
+ ↓
++----+------+    +----+------+    +----+------+    +----+---------+
+| 10 | add2 | -> | 20 | add3 | -> | 30 | add4 | -> | 40 | nullptr |
++----+------+    +----+------+    +----+------+    +----+---------+
 
 1. Head does not contail the value 8.
 2. Head stores only the memory address for the first linked element in the list.
