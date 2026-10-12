@@ -53,3 +53,6 @@ while(temp != nullptr){
 
 }
 ```
+The tracing stops because the linked list reaches the next of the forth element in the list that has the value of nullptr, that was instructed in the while loop.
+The big O complexity is O(n). The linked list traverses the entire list up to the point of the nullptr value in the final next variable. in this instance the worst case is O(4), best case O(1). 
+
