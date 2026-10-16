@@ -1,1 +1,27 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://curtism.dev</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+  <url>
+    <loc>https://curtism.dev/windows-software/</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+  <url>
+    <loc>https://curtism.dev/apple-software/</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+   <url>
+    <loc>https://curtism.dev/schema-org-structured-data/</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+  <url>
+    <loc>https://curtism.dev/web-hosting/</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+  <url>
+    <loc>https://curtism.dev/payment-processing/</loc>
+    <lastmod>2026-10-05</lastmod>
+  </url>
+</urlset>
