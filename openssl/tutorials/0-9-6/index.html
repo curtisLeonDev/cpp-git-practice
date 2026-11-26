@@ -1,0 +1,386 @@
+OpenSSL 0.9.6: A Practical C Compilation Handbook
+
+Purpose
+
+This handbook is specific to the OpenSSL 0.9.6 build:
+
+-   Host operating system: 64-bit Windows
+-   Shell: MSYS2 UCRT64
+-   Compiler: MinGW-w64 GCC, 32-bit target
+-   Compiler location: /mingw32/bin
+-   Compiler target: i686-w64-mingw32
+-   OpenSSL source tree: openssl-0.9.6
+-   OpenSSL configuration: Mingw32 no-asm
+-   Built libraries: out/libcrypto.a and out/libssl.a
+-   Generated OpenSSL headers: outinc/openssl/
+
+The goal is to write your own C programs and compile them against this
+particular OpenSSL build.
+
+Important: this is not a guide for compiling against a modern OpenSSL
+installation. OpenSSL 0.9.6 is very old, and its APIs and headers differ
+from current releases.
+
+1. Open the right MSYS2 terminal
+
+Open the MSYS2 UCRT64 terminal you used for the OpenSSL build.
+
+Before compiling, make sure the 32-bit compiler is first on PATH:
+
+    export PATH=/mingw32/bin:$PATH
+
+Check which compiler will run:
+
+    which gcc
+
+It should show:
+
+    /mingw32/bin/gcc
+
+Check the compiler’s target:
+
+    gcc -dumpmachine
+
+It should report:
+
+    i686-w64-mingw32
+
+That target means GCC is producing 32-bit x86 Windows code. Do these
+checks in a new terminal session too; the PATH change does not
+necessarily persist after closing the terminal.
+
+2. Know the important OpenSSL build directories
+
+From the OpenSSL 0.9.6 source directory, these are the important paths:
+
+    outinc/openssl/
+        Generated OpenSSL header files used by this build.
+
+    out/libcrypto.a
+        Static library containing OpenSSL's cryptographic routines.
+
+    out/libssl.a
+        Static library containing the SSL protocol routines.
+
+Your source file can live in a separate working directory. You do not
+have to put your own programs inside the OpenSSL source tree.
+
+For the commands below, assume the OpenSSL source directory is:
+
+    /c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6
+
+If your directory is different, substitute your actual path.
+
+3. The basic GCC command
+
+A typical command to compile a C program using OpenSSL 0.9.6 is:
+
+    gcc -I"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/outinc" ^
+        -L"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/out" ^
+        -o myprogram.exe myprogram.c -lcrypto -lwsock32 -lgdi32
+
+In the MSYS2 shell, use a backslash for line continuation rather than
+the Windows Command Prompt caret. The same command written for MSYS2 is:
+
+    gcc -I"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/outinc" \
+        -L"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/out" \
+        -o myprogram.exe myprogram.c -lcrypto -lwsock32 -lgdi32
+
+What each part means:
+
+    gcc
+        Run the C compiler and linker.
+
+    -I"path"
+        Add a directory to the header-file search path.
+        The compiler uses this to find headers such as openssl/evp.h.
+
+    -L"path"
+        Add a directory to the library search path.
+        The linker uses this to find libcrypto.a or libssl.a.
+
+    -o myprogram.exe
+        Name the executable that GCC should create.
+
+    myprogram.c
+        Your C source file.
+
+    -lcrypto
+        Link the OpenSSL cryptography library.
+        GCC searches for a library named libcrypto.a (or a compatible library form).
+
+    -lwsock32 -lgdi32
+        Windows system libraries that were included in the OpenSSL build's own link command.
+        Keep them when following this build's link setup.
+
+The order matters: put your source/object files before the libraries
+that satisfy their references. In particular, put -lcrypto after the C
+file that calls OpenSSL functions.
+
+4. A minimal OpenSSL test program
+
+Create a file named version_test.c:
+
+    #include <stdio.h>
+    #include <openssl/opensslv.h>
+
+    int main(void)
+    {
+        printf("OpenSSL version: %s\n", OPENSSL_VERSION_TEXT);
+        return 0;
+    }
+
+Compile it from the MSYS2 shell:
+
+    gcc -I"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/outinc" \
+        -o version_test.exe version_test.c
+
+This example only uses a header-defined version string, so it does not
+need to link libcrypto.
+
+Run it:
+
+    ./version_test.exe
+
+This is a useful first check that your compiler can find the generated
+OpenSSL headers.
+
+5. A test that links to libcrypto
+
+The next example calls an actual OpenSSL library function. It calculates
+a SHA-1 digest using the EVP interface available in OpenSSL 0.9.6.
+
+Create digest_test.c:
+
+    #include <stdio.h>
+    #include <openssl/evp.h>
+
+    int main(void)
+    {
+        unsigned char digest[EVP_MAX_MD_SIZE];
+        unsigned int digest_length = 0;
+        const unsigned char message[] = "Hello, OpenSSL 0.9.6";
+
+        if (!EVP_Digest(message,
+                        sizeof(message) - 1,
+                        digest,
+                        &digest_length,
+                        EVP_sha1(),
+                        NULL))
+        {
+            fprintf(stderr, "Digest calculation failed\n");
+            return 1;
+        }
+
+        printf("SHA-1: ");
+
+        for (unsigned int i = 0; i < digest_length; i++)
+            printf("%02x", digest[i]);
+
+        printf("\n");
+        return 0;
+    }
+
+Compile it:
+
+    gcc -I"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/outinc" \
+        -L"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/out" \
+        -o digest_test.exe digest_test.c \
+        -lcrypto -lwsock32 -lgdi32
+
+Run it:
+
+    ./digest_test.exe
+
+You should see a SHA-1 digest printed as hexadecimal characters.
+
+This example demonstrates the difference between including a header and
+linking a library:
+
+-   The #include line lets the compiler see the function declaration and
+    related types.
+-   The -lcrypto option lets the linker find the compiled implementation
+    of EVP_Digest and the other OpenSSL functions it uses.
+
+Including a header does not, by itself, link the function
+implementation.
+
+6. When your program uses SSL functions
+
+If your program uses the SSL/TLS API, it will generally need both
+libraries:
+
+    -lssl -lcrypto
+
+For example, the link portion of the command becomes:
+
+    -lssl -lcrypto -lwsock32 -lgdi32
+
+libssl contains the SSL protocol implementation. It depends on
+cryptographic functionality supplied by libcrypto, which is why -lcrypto
+follows -lssl.
+
+A general command for a program using SSL is:
+
+    gcc -I"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/outinc" \
+        -L"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/out" \
+        -o ssl_program.exe ssl_program.c \
+        -lssl -lcrypto -lwsock32 -lgdi32
+
+Only link libssl when your program actually uses the SSL library. For a
+program that only uses hashes, ciphers, random-number functions, or key
+operations from the crypto library, -lcrypto is generally the library
+you need.
+
+7. Compile first, then link (useful while learning)
+
+You can separate compilation from linking.
+
+Compile a source file into an object file:
+
+    gcc -I"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/outinc" \
+        -c digest_test.c -o digest_test.o
+
+The -c option tells GCC to compile but not link an executable.
+
+Then link the object file against OpenSSL:
+
+    gcc -L"/c/Users/curti/onedrive/desktop/OpenSSL/openssl-0.9.6/out" \
+        -o digest_test.exe digest_test.o \
+        -lcrypto -lwsock32 -lgdi32
+
+This makes the two stages visible:
+
+1.  Compilation: C source becomes an object file.
+
+2.  Linking: object files and libraries are combined into an executable.
+
+3.  Verify that your program is 32-bit
+
+After building an executable, inspect it:
+
+    file digest_test.exe
+
+You want output identifying it as:
+
+    PE32 ... Intel 80386
+
+That is the same architecture identification we used to verify
+out/openssl.exe.
+
+If you see PE32+, that indicates a 64-bit Windows executable. Recheck
+which GCC is being used and run:
+
+    gcc -dumpmachine
+
+It should say:
+
+    i686-w64-mingw32
+
+9. Common errors and what they usually mean
+
+fatal error: openssl/evp.h: No such file or directory
+
+The compiler cannot find the OpenSSL headers. Check the -I option. It
+must point to the directory that contains the openssl folder, which for
+this build is outinc, not outinc/openssl.
+
+undefined reference to `EVP_Digest’
+
+The compiler saw the declaration, but the linker could not find the
+implementation. Check that: - You included -L pointing to the OpenSSL
+out directory. - You included -lcrypto. - The library option appears
+after your source file or object file.
+
+cannot find -lcrypto
+
+The linker cannot find libcrypto.a in its search directories. Check that
+out/libcrypto.a exists and that your -L path points to the directory
+containing it.
+
+The program builds but Windows reports a missing DLL
+
+This build produced static OpenSSL archives (.a), but other libraries or
+the compiler runtime may still be dynamically linked. The error message
+identifies the missing DLL. Do not assume that a static OpenSSL library
+makes the entire executable completely self-contained.
+
+The executable is 64-bit
+
+The wrong compiler may be first on PATH. Run:
+
+    which gcc
+    gcc -dumpmachine
+
+The compiler should be /mingw32/bin/gcc and the target should be
+i686-w64-mingw32.
+
+10. A reusable command template
+
+For a program that uses OpenSSL cryptographic functions:
+
+    gcc -I"/path/to/openssl-0.9.6/outinc" \
+        -L"/path/to/openssl-0.9.6/out" \
+        -o program.exe program.c \
+        -lcrypto -lwsock32 -lgdi32
+
+For a program that uses the SSL API too:
+
+    gcc -I"/path/to/openssl-0.9.6/outinc" \
+        -L"/path/to/openssl-0.9.6/out" \
+        -o program.exe program.c \
+        -lssl -lcrypto -lwsock32 -lgdi32
+
+Replace /path/to/openssl-0.9.6 with the actual location of your
+source/build tree.
+
+11. Keep this build isolated
+
+Because OpenSSL 0.9.6 is an old release, keep its headers and libraries
+separate from any newer OpenSSL installation.
+
+For this project: - Use the outinc headers generated for this build. -
+Link against the matching out/libcrypto.a and, when needed,
+out/libssl.a. - Use the 32-bit /mingw32/bin compiler. - Do not
+accidentally mix these files with headers or libraries from a different
+OpenSSL version or a 64-bit toolchain.
+
+Mixing versions or architectures can lead to confusing compiler errors,
+linker errors, or runtime failures.
+
+Quick reference
+
+Check compiler:
+
+    which gcc
+    gcc -dumpmachine
+
+Set compiler path:
+
+    export PATH=/mingw32/bin:$PATH
+
+Compile a crypto-only program:
+
+    gcc -I"/path/to/openssl-0.9.6/outinc" \
+        -L"/path/to/openssl-0.9.6/out" \
+        -o program.exe program.c \
+        -lcrypto -lwsock32 -lgdi32
+
+Compile a program using SSL:
+
+    gcc -I"/path/to/openssl-0.9.6/outinc" \
+        -L"/path/to/openssl-0.9.6/out" \
+        -o program.exe program.c \
+        -lssl -lcrypto -lwsock32 -lgdi32
+
+Check executable architecture:
+
+    file program.exe
+
+Expected target:
+
+    i686-w64-mingw32
+
+Expected executable format:
+
+    PE32 ... Intel 80386
